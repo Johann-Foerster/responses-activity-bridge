@@ -1,0 +1,18 @@
+[project]
+name = "responses-activity-bridge"
+version = "0.1.0"
+description = "Bridges an OpenAI Responses API endpoint to Microsoft Teams via the Activity Protocol (M365 Agents SDK), with streaming."
+requires-python = ">=3.10"
+dependencies = [
+    "microsoft-agents-hosting-aiohttp>=1.7.0",
+    "microsoft-agents-authentication-msal>=1.7.0",
+    "openai>=1.60",
+    "python-dotenv>=1.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["bridge"]
