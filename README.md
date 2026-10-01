@@ -22,7 +22,20 @@ cp .env.example .env   # fill in bot credentials + Responses endpoint
 python -m bridge
 ```
 
-Expose `http://localhost:3978/api/messages` via a dev tunnel and set it as the messaging endpoint of your Azure Bot. Add the Teams channel and sideload a Teams app manifest pointing at the bot id.
+## Connect to Azure Bot and test in Web Chat
+
+The Azure Bot Service needs to reach the bridge over HTTPS. For development, expose the local port with a tunnel, e.g. ngrok or a dev tunnel:
+
+```bash
+ngrok http 3978
+# or: devtunnel host -p 3978 --allow-anonymous
+```
+
+Then set the **Messaging endpoint** of your Azure Bot to the public URL **plus `/api/messages`**, e.g. `https://<id>.ngrok-free.app/api/messages`. The host URL alone is not enough; the bridge only serves the bot route there. `https://<id>.ngrok-free.app/healthz` must return 200 if the tunnel reaches the bridge.
+
+Keep `ANONYMOUS_ALLOWED` unset for this; incoming requests are then validated against your tenant and client id.
+
+Open **Test in Web Chat** on the Azure Bot resource and send a message. Streaming works there too (the SDK paces Web Chat at two updates per second), so informative updates, incremental text and the final message can be checked without a Teams app. Wiring up the Teams channel and app manifest comes later.
 
 ## Local test without Teams
 
